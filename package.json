@@ -1,0 +1,73 @@
+{
+  "name": "mcp-local-file-search",
+  "version": "1.0.0",
+  "description": "Local file indexing and search MCP server with BM25 algorithm and multilingual support",
+  "main": "src/main.js",
+  "bin": {
+    "local-file": "src/main.js"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run test",
+    "build": "pkg . --out-path dist",
+    "build:all": "pkg . --targets node18-linux-x64,node18-macos-x64,node18-win-x64 --out-path dist"
+  },
+  "pkg": {
+    "scripts": "src/**/*.js",
+    "assets": [],
+    "targets": [
+      "node18-linux-x64",
+      "node18-macos-x64", 
+      "node18-win-x64"
+    ]
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "search",
+    "files",
+    "indexing",
+    "bm25",
+    "full-text-search",
+    "file-search",
+    "korean",
+    "multilingual",
+    "ai-tools",
+    "cursor",
+    "cli"
+  ],
+  "author": "MC.Song <mtorange@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/mtorange/mcp-local-file-search#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtorange/mcp-local-file-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mtorange/mcp-local-file-search/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "src/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "commander": "^11.0.0",
+    "fs-extra": "^11.0.0",
+    "jszip": "^3.10.1",
+    "mammoth": "^1.6.0",
+    "natural": "^6.0.0",
+    "pdf-parse": "^1.1.1",
+    "pptx-parser": "^1.0.3",
+    "xlsx": "^0.18.5",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}

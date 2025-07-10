@@ -1,0 +1,49 @@
+# Development files
+.vscode/
+.idea/
+
+# Test directories
+test*/
+tests/
+
+# Debug files
+debug*.log
+mcp-debug.log
+
+# Local index files (for testing)
+.local-file-index.json
+
+# Test data
+db/
+
+# Git files
+.git/
+.gitignore
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation drafts
+docs/
+*.draft.*
+
+# Scripts
+scripts/
+
+# Examples (if any)
+examples/
+
+# CI/CD files
+.github/
+.travis.yml
+.circleci/
+
+# Coverage
+coverage/
+.nyc_output 
