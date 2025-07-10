@@ -1,6 +1,6 @@
 {
   "name": "mcp-local-file-search",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Local file indexing and search MCP server with BM25 algorithm and multilingual support",
   "main": "src/main.js",
   "bin": {
