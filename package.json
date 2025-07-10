@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node src/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No tests specified\"",
     "prepublishOnly": "npm run test",
     "build": "pkg . --out-path dist",
     "build:all": "pkg . --targets node18-linux-x64,node18-macos-x64,node18-win-x64 --out-path dist"
