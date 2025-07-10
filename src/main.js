@@ -28,14 +28,22 @@ program
   .option('--help', 'show help');
 
 // 인덱스 확인 및 자동 인덱싱 함수
-async function ensureIndexExists(targetDir, debugFile, forceReindex = false) {
+async function ensureIndexExists(targetDir, debugFile, forceReindex = false, isMCPMode = false) {
   const indexPath = path.join(targetDir, '.local-file-index.json');
   
   if (forceReindex || !await fs.pathExists(indexPath)) {
-    console.log('인덱스가 없어 자동 인덱싱을 시작합니다...');
+    // MCP 모드가 아닐 때만 콘솔 출력
+    if (!isMCPMode) {
+      console.log('인덱스가 없어 자동 인덱싱을 시작합니다...');
+    }
+    
     const indexer = new Indexer(targetDir, debugFile);
     await indexer.index(forceReindex);
-    console.log('인덱싱이 완료되었습니다.');
+    
+    // MCP 모드가 아닐 때만 콘솔 출력
+    if (!isMCPMode) {
+      console.log('인덱싱이 완료되었습니다.');
+    }
   }
 }
 
@@ -45,13 +53,19 @@ program
   .description('run in MCP mode')
   .action(async () => {
     try {
-      // 자동 인덱싱 확인
-      await ensureIndexExists(targetDir, debugFile, forceReindex);
+      // 자동 인덱싱 확인 (MCP 모드이므로 조용히 실행)
+      await ensureIndexExists(targetDir, debugFile, forceReindex, true);
       
       const server = new MCPServer(targetDir, debugFile);
       await server.start();
     } catch (error) {
-      console.error('MCP 서버 시작 중 오류:', error);
+      // MCP 모드에서는 stderr로 에러 출력 (stdin/stdout은 MCP 통신용)
+      if (debugFile) {
+        const fs = require('fs');
+        const timestamp = new Date().toISOString();
+        fs.appendFileSync(debugFile, `[${timestamp}] MCP 서버 시작 중 오류: ${error.message}\n`);
+      }
+      process.stderr.write(`MCP 서버 시작 중 오류: ${error.message}\n`);
       process.exit(1);
     }
   });
@@ -63,8 +77,8 @@ program
   .argument('<text>', 'text to search for')
   .action(async (text) => {
     try {
-      // 자동 인덱싱 확인
-      await ensureIndexExists(targetDir, debugFile, forceReindex);
+      // 자동 인덱싱 확인 (검색 모드이므로 일반 출력)
+      await ensureIndexExists(targetDir, debugFile, forceReindex, false);
       
       const searcher = new Searcher(targetDir, debugFile);
       const results = await searcher.search(text);
