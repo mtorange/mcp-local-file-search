@@ -1,0 +1,21 @@
+다음과 같은 mcp(model context protocol) 프로그램을 만들꺼야.
+
+1. node.js를 사용. npx로 실행 가능하도록
+2. 이름은 local-file
+3. 특정 디렉토리의 파일을 모두 읽어서 인덱싱을 하고 검색을 해줌.
+4. 지원 가능한 포멧은 doc, pptx, pdf, xls, txt 등.. 이외에도 파싱 가능한 포멧이 있으면 추가함
+  (pptx나 xls, doc등의 바이너리 포멧 파일들은 포멧별 reader를 이용해서 text추출한 다음 인덱싱 )
+3. 다음과 같이 실행함. 
+   npx local-file <command> [options]
+4. <command>
+   * local-file mcp : mcp모드로 실행. stdio를 통해 mcp 프로토콜을 사용할 수 있도록 함.
+   * local-file search <text> : 테스트 용으로 text를 검색함
+   * local-file index : 디렉토리의 파일을 인덱싱함. bm25사용. 파일의 변경이 없는 경우에는 아무것도 하지 않음
+5. options
+   * --dir=<directory> : 대상 파일이 존재하는 디렉토리. 이 디렉토리의 파일을 모두 인덱싱함.
+   * --debug-log=<file> : 디버그 로그를 file에 출력함. mcp 프로토콜의 request/response를 출력함.
+   * --help : 도움말을 출력함.
+   * --force : index명령이 들어왔을 경우 파일의 변경이 없는 경우에도 강제 인덱싱
+6. 제공되는 mcp tool은 search-local 이며, 이것을 통해 파일의 내용을 검색함
+7. 검색 결과를 제공할 때는 파일의 경로와 파일의 내용을 함께 제공함.
+8. search나 mcp명령을 실행 할 때는 index를 자동으로 실행함
