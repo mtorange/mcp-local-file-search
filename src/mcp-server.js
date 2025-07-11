@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const Searcher = require('./searcher');
 const Indexer = require('./indexer');
+const i18n = require('./i18n');
 
 class MCPServer {
   constructor(targetDir, debugFile = null) {
@@ -15,6 +16,9 @@ class MCPServer {
     this.isRunning = false;
     this.initialized = false;
     this.clientInitialized = false; // 클라이언트 초기화 상태 추가
+    
+    // 언어 정보 로그
+    this.debug(`Language info: ${JSON.stringify(i18n.getLocaleInfo(), null, 2)}`);
   }
 
   // 디버그 로그 출력
@@ -109,7 +113,7 @@ class MCPServer {
     try {
       const indexPath = path.join(this.targetDir, '.local-file-index.json');
       if (!await fs.pathExists(indexPath)) {
-        this.debug('인덱스가 없어 자동 인덱싱 시작');
+        this.debug(i18n.t('indexing.start'));
         await this.indexer.index(false);
       }
     } catch (error) {
@@ -143,17 +147,17 @@ class MCPServer {
       tools: [
         {
           name: 'search-local',
-          description: '로컬 파일에서 텍스트를 검색합니다.',
+          description: i18n.t('tool.search_local.description'),
           inputSchema: {
             type: 'object',
             properties: {
               query: {
                 type: 'string',
-                description: '검색할 텍스트'
+                description: i18n.t('tool.search_local.query')
               },
               limit: {
                 type: 'integer',
-                description: '검색 결과 최대 개수 (기본값: 10)',
+                description: i18n.t('tool.search_local.limit'),
                 default: 10
               }
             },
@@ -162,17 +166,17 @@ class MCPServer {
         },
         {
           name: 'search-in-file',
-          description: '특정 파일에서 텍스트를 검색합니다.',
+          description: i18n.t('tool.search_in_file.description'),
           inputSchema: {
             type: 'object',
             properties: {
               filePath: {
                 type: 'string',
-                description: '검색할 파일 경로'
+                description: i18n.t('tool.search_in_file.file_path')
               },
               query: {
                 type: 'string',
-                description: '검색할 텍스트'
+                description: i18n.t('tool.search_in_file.query')
               }
             },
             required: ['filePath', 'query']
@@ -180,7 +184,7 @@ class MCPServer {
         },
         {
           name: 'get-index-stats',
-          description: '인덱스 통계를 조회합니다.',
+          description: i18n.t('tool.get_index_stats.description'),
           inputSchema: {
             type: 'object',
             properties: {
@@ -194,17 +198,17 @@ class MCPServer {
         },
         {
           name: 'find-similar-files',
-          description: '특정 파일과 유사한 파일들을 찾습니다.',
+          description: i18n.t('tool.find_similar_files.description'),
           inputSchema: {
             type: 'object',
             properties: {
               filePath: {
                 type: 'string',
-                description: '기준 파일 경로'
+                description: i18n.t('tool.find_similar_files.file_path')
               },
               limit: {
                 type: 'integer',
-                description: '결과 최대 개수 (기본값: 5)',
+                description: i18n.t('tool.find_similar_files.limit'),
                 default: 5
               }
             },
@@ -213,13 +217,13 @@ class MCPServer {
         },
         {
           name: 'reindex',
-          description: '파일을 다시 인덱싱합니다.',
+          description: i18n.t('tool.reindex.description'),
           inputSchema: {
             type: 'object',
             properties: {
               force: {
                 type: 'boolean',
-                description: '강제 재인덱싱 여부 (기본값: false)',
+                description: i18n.t('tool.reindex.force'),
                 default: false
               }
             }
