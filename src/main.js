@@ -7,6 +7,7 @@ const MCPServer = require('./mcp-server');
 const Indexer = require('./indexer');
 const Searcher = require('./searcher');
 const i18n = require('./i18n');
+const packageJson = require('../package.json');
 
 // 전역 옵션
 let targetDir = process.cwd();
@@ -65,7 +66,7 @@ function logLanguageInfo() {
 program
   .name('local-file')
   .description('Local file indexing and search MCP server')
-  .version('1.0.0')
+  .version(packageJson.version)
   .option('--dir <directory>', 'target directory to index', (value) => {
     targetDir = path.resolve(value);
   })
