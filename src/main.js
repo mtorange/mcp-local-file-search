@@ -6,6 +6,7 @@ const fs = require('fs-extra');
 const MCPServer = require('./mcp-server');
 const Indexer = require('./indexer');
 const Searcher = require('./searcher');
+const i18n = require('./i18n');
 
 // 전역 옵션
 let targetDir = process.cwd();
@@ -55,6 +56,12 @@ function writeDebugLog(message) {
   }
 }
 
+// 언어 정보 로그 (디버그용)
+function logLanguageInfo() {
+  const info = i18n.getLocaleInfo();
+  writeDebugLog(`Language detection info: ${JSON.stringify(info, null, 2)}`);
+}
+
 program
   .name('local-file')
   .description('Local file indexing and search MCP server')
@@ -75,21 +82,24 @@ async function ensureIndexExists(targetDir, debugFile, forceReindex = false, isM
   const indexPath = path.join(targetDir, '.local-file-index.json');
   
   if (forceReindex || !await fs.pathExists(indexPath)) {
+    const startMessage = forceReindex ? i18n.t('indexing.force') : i18n.t('indexing.start');
+    
     // MCP 모드가 아닐 때만 콘솔 출력
     if (!isMCPMode) {
-      console.log('인덱스가 없어 자동 인덱싱을 시작합니다...');
+      console.log(startMessage);
     } else {
-      writeDebugLog('인덱스가 없어 자동 인덱싱을 시작합니다...');
+      writeDebugLog(startMessage);
     }
     
     const indexer = new Indexer(targetDir, debugFile);
     await indexer.index(forceReindex);
     
+    const completeMessage = i18n.t('indexing.complete');
     // MCP 모드가 아닐 때만 콘솔 출력
     if (!isMCPMode) {
-      console.log('인덱싱이 완료되었습니다.');
+      console.log(completeMessage);
     } else {
-      writeDebugLog('인덱싱이 완료되었습니다.');
+      writeDebugLog(completeMessage);
     }
   }
 }
@@ -111,6 +121,7 @@ program
       process.env.QUIET = 'true';
       
       writeDebugLog('MCP 모드 시작 - console 출력 차단됨, 환경 변수 설정됨');
+      logLanguageInfo();
       
       // 프로세스 종료 시 console 복원 (개발 모드에서 유용)
       process.on('SIGINT', () => {
@@ -127,25 +138,25 @@ program
       
       // 예외 처리 (외부 모듈의 에러를 디버그 로그로 기록)
       process.on('uncaughtException', (error) => {
-        const errorMessage = `Uncaught Exception: ${error.message}\n${error.stack}`;
+        const errorMessage = `${i18n.t('error.uncaught_exception')}: ${error.message}\n${error.stack}`;
         writeDebugLog(errorMessage);
         // --debug-log 옵션이 있으면 stderr 출력 최소화
         if (debugFile) {
-          process.stderr.write(`Uncaught Exception logged to debug file\n`);
+          process.stderr.write(`${i18n.t('error.uncaught_exception')} logged to debug file\n`);
         } else {
-          process.stderr.write(`Uncaught Exception: ${error.message}\n`);
+          process.stderr.write(`${i18n.t('error.uncaught_exception')}: ${error.message}\n`);
         }
         process.exit(1);
       });
       
       process.on('unhandledRejection', (reason, promise) => {
-        const errorMessage = `Unhandled Rejection at: ${promise}, reason: ${reason}`;
+        const errorMessage = `${i18n.t('error.unhandled_rejection')}: ${promise}, reason: ${reason}`;
         writeDebugLog(errorMessage);
         // --debug-log 옵션이 있으면 stderr 출력 최소화
         if (debugFile) {
-          process.stderr.write(`Unhandled Rejection logged to debug file\n`);
+          process.stderr.write(`${i18n.t('error.unhandled_rejection')} logged to debug file\n`);
         } else {
-          process.stderr.write(`Unhandled Rejection: ${reason}\n`);
+          process.stderr.write(`${i18n.t('error.unhandled_rejection')}: ${reason}\n`);
         }
         process.exit(1);
       });
@@ -157,14 +168,14 @@ program
       await server.start();
     } catch (error) {
       // MCP 모드에서는 모든 오류를 디버그 로그로 기록
-      const errorMessage = `MCP 서버 시작 중 오류: ${error.message}\n스택: ${error.stack}`;
+      const errorMessage = `${i18n.t('error.mcp_server')}: ${error.message}\n스택: ${error.stack}`;
       writeDebugLog(errorMessage);
       
       // --debug-log 옵션이 있으면 stderr 출력 최소화
       if (debugFile) {
-        process.stderr.write(`MCP 서버 오류 - 자세한 내용은 디버그 로그 참조\n`);
+        process.stderr.write(`${i18n.t('error.mcp_server')} - 자세한 내용은 디버그 로그 참조\n`);
       } else {
-        process.stderr.write(`MCP 서버 시작 중 오류: ${error.message}\n`);
+        process.stderr.write(`${i18n.t('error.mcp_server')}: ${error.message}\n`);
       }
       process.exit(1);
     }
@@ -192,12 +203,12 @@ program
       writeDebugLog(`검색 완료: ${results.length}개 결과 발견`);
       
       if (results.length === 0) {
-        console.log('검색 결과가 없습니다.');
-        writeDebugLog('검색 결과 없음');
+        console.log(i18n.t('search.no_results'));
+        writeDebugLog(i18n.t('search.no_results'));
         return;
       }
       
-      console.log(`검색 결과 (${results.length}개):`);
+      console.log(i18n.t('search.results', { count: results.length }));
       results.forEach((result, index) => {
         console.log(`\n${index + 1}. ${result.file}`);
         console.log(`점수: ${result.score.toFixed(4)}`);
@@ -205,7 +216,7 @@ program
         writeDebugLog(`결과 ${index + 1}: ${result.file}, 점수: ${result.score.toFixed(4)}`);
       });
       
-      writeDebugLog('검색 명령어 완료');
+      writeDebugLog(i18n.t('search.complete'));
     } catch (error) {
       const errorMessage = `검색 중 오류: ${error.message}`;
       console.error(errorMessage);
@@ -228,14 +239,37 @@ program
       const indexer = new Indexer(targetDir, debugFile);
       await indexer.index(forceReindex);
       
-      console.log('인덱싱이 완료되었습니다.');
-      writeDebugLog('인덱싱 명령어 완료');
+      console.log(i18n.t('indexing.complete'));
+      writeDebugLog(i18n.t('indexing.complete'));
     } catch (error) {
       const errorMessage = `인덱싱 중 오류: ${error.message}`;
       console.error(errorMessage);
       writeDebugLog(`${errorMessage}\n스택: ${error.stack}`);
       process.exit(1);
     }
+  });
+
+// 언어 정보 명령어
+program
+  .command('lang-info')
+  .description('show language detection information')
+  .action(() => {
+    const info = i18n.getLocaleInfo();
+    console.log('Language Detection Information:');
+    console.log('============================');
+    console.log(`Current Locale: ${info.detected}`);
+    console.log(`Environment Variables:`);
+    console.log(`  MCP_LANG: ${info.env.MCP_LANG || 'not set'}`);
+    console.log(`  LANGUAGE: ${info.env.LANGUAGE || 'not set'}`);
+    console.log(`  LC_ALL: ${info.env.LC_ALL || 'not set'}`);
+    console.log(`  LC_MESSAGES: ${info.env.LC_MESSAGES || 'not set'}`);
+    console.log(`  LANG: ${info.env.LANG || 'not set'}`);
+    console.log(`Node.js Intl API: ${info.intl}`);
+    console.log('');
+    console.log('Test Messages:');
+    console.log(`  ${i18n.t('indexing.start')}`);
+    console.log(`  ${i18n.t('search.no_results')}`);
+    console.log(`  ${i18n.t('error.mcp_server')}`);
   });
 
 // 도움말 처리
@@ -245,6 +279,7 @@ program.on('--help', () => {
   console.log('  $ local-file mcp --dir=/path/to/file');
   console.log('  $ local-file search "검색할 텍스트" --dir=/path/to/file');
   console.log('  $ local-file index --dir=/path/to/file --force');
+  console.log('  $ local-file lang-info');
 });
 
 // 명령어 파싱 및 실행

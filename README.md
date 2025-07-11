@@ -1,162 +1,263 @@
 # MCP Local File Search
 
-로컬 파일을 인덱싱하고 검색하는 MCP (Model Context Protocol) 서버입니다.
+A Model Context Protocol (MCP) server that indexes and searches local files.
 
-## 기능
+> **한국어 버전은 [README_KR.md](README_KR.md)를 참고하세요.**
 
-- 다양한 파일 포맷 지원 (txt, md, doc, docx, pdf, xls, xlsx, pptx 등)
-- BM25 알고리즘을 사용한 고급 검색
-- 파일 변경 감지 및 증분 인덱싱
-- MCP 프로토콜을 통한 AI 도구 통합
-- 명령줄 인터페이스 제공
+## Features
 
-## 설치
+- Support for various file formats (txt, md, doc, docx, pdf, xls, xlsx, pptx, etc.)
+- Advanced search using BM25 algorithm
+- File change detection and incremental indexing
+- AI tool integration via MCP protocol
+- Command-line interface provided
+
+## Installation
 
 ```bash
-# 전역 설치 (권장)
-npm install -g mcp-local-file-search
+# Global installation (recommended)
+npm install -g @mtorange/mcp-local-file-search
 ```
 
-설치 후 `local-file` 명령어를 사용할 수 있습니다.
+After installation, you can use the `local-file` command.
 
-## 사용법
+## Usage
 
-### 명령어
+### Commands
 
-#### 1. MCP 모드 실행
+#### 1. Run MCP Mode
 ```bash
-# 전역 설치 후
+# After global installation
 local-file mcp --dir=/path/to/file
 
-# 또는 npx로 바로 사용
-npx mcp-local-file-search mcp --dir=/path/to/file
+# Or use directly with npx
+npx @mtorange/mcp-local-file-search mcp --dir=/path/to/file
 ```
 
-#### 2. 텍스트 검색
+#### 2. Text Search
 ```bash
-# 전역 설치 후
-local-file search "검색할 텍스트" --dir=/path/to/file
+# After global installation
+local-file search "text to search" --dir=/path/to/file
 
-# 또는 npx로 바로 사용
-npx mcp-local-file-search search "검색할 텍스트" --dir=/path/to/file
+# Or use directly with npx
+npx @mtorange/mcp-local-file-search search "text to search" --dir=/path/to/file
 ```
 
-#### 3. 파일 인덱싱
+#### 3. File Indexing
 ```bash
-# 전역 설치 후
+# After global installation
 local-file index --dir=/path/to/file
 
-# 또는 npx로 바로 사용
-npx mcp-local-file-search index --dir=/path/to/file
+# Or use directly with npx
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file
 ```
 
-#### 4. 강제 재인덱싱
+#### 4. Force Reindexing
 ```bash
-# 전역 설치 후
+# After global installation
 local-file index --dir=/path/to/file --force
 
-# 또는 npx로 바로 사용
-npx mcp-local-file-search index --dir=/path/to/file --force
+# Or use directly with npx
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file --force
 ```
 
-### 옵션
+### Options
 
-- `--dir=<directory>`: 인덱싱할 디렉토리 지정
-- `--debug-log=<file>`: 디버그 로그를 파일에 출력
-- `--force`: 파일 변경 여부와 관계없이 강제 재인덱싱
-- `--help`: 도움말 표시
+- `--dir=<directory>`: Specify directory to index
+- `--debug-log=<file>`: Output debug logs to file
+- `--force`: Force reindexing regardless of file changes
+- `--help`: Show help
 
-### MCP 도구
+### MCP Tools
 
-MCP 모드에서 다음 도구들을 사용할 수 있습니다:
+The following tools are available in MCP mode:
 
-1. **search-local**: 로컬 파일에서 텍스트 검색
-2. **search-in-file**: 특정 파일에서 텍스트 검색
-3. **get-index-stats**: 인덱스 통계 조회
-4. **find-similar-files**: 유사한 파일 찾기
-5. **reindex**: 파일 재인덱싱
+1. **search-local**: Search text in local files
+2. **search-in-file**: Search text in specific file
+3. **get-index-stats**: Get index statistics
+4. **find-similar-files**: Find similar files
+5. **reindex**: Reindex files
 
-## 지원 파일 형식
+## Supported File Formats
 
-- 텍스트: `.txt`, `.md`, `.json`, `.js`, `.ts`, `.html`, `.css`, `.xml`, `.csv`
-- 문서: `.doc`, `.docx`, `.pdf`
-- 스프레드시트: `.xls`, `.xlsx`
-- 프레젠테이션: `.pptx`
+- Text: `.txt`, `.md`, `.json`, `.js`, `.ts`, `.html`, `.css`, `.xml`, `.csv`
+- Documents: `.doc`, `.docx`, `.pdf`
+- Spreadsheets: `.xls`, `.xlsx`
+- Presentations: `.pptx`
 
-## 예제
+## Examples
 
-### 1. 기본 사용법
+### 1. Basic Usage
 ```bash
-# 현재 디렉토리 인덱싱
+# Index current directory
 local-file index
 
-# 특정 텍스트 검색
+# Search for specific text
 local-file search "JavaScript"
 
-# MCP 서버 실행
+# Run MCP server
 local-file mcp --debug-log=debug.log
 ```
 
-### 2. 특정 디렉토리 작업
+### 2. Working with Specific Directory
 ```bash
-# 문서 디렉토리 인덱싱
+# Index documents directory
 local-file index --dir=~/Documents
 
-# 문서에서 검색
-local-file search "프로젝트" --dir=~/Documents
+# Search in documents
+local-file search "project" --dir=~/Documents
 
-# MCP 서버 실행
+# Run MCP server
 local-file mcp --dir=~/Documents
 ```
 
-### 3. 디버그 모드
+### 3. Debug Mode
 ```bash
-# 디버그 로그와 함께 MCP 서버 실행
+# Run MCP server with debug logging
 local-file mcp --dir=~/Documents --debug-log=debug.log
 ```
 
-### 4. npx로 바로 사용
+### 4. Using npx Directly
 ```bash
-# 전역 설치 없이 바로 사용
-npx mcp-local-file-search mcp --dir=/path/to/file
-npx mcp-local-file-search search "검색어" --dir=/path/to/file
+# Use without global installation
+npx @mtorange/mcp-local-file-search mcp --dir=/path/to/file
+npx @mtorange/mcp-local-file-search search "search term" --dir=/path/to/file
 ```
 
-## 인덱스 파일
+## Index File
 
-인덱스는 대상 디렉토리에 `.local-file-index.json` 파일로 저장됩니다. 이 파일은 다음 정보를 포함합니다:
+The index is saved as `.local-file-index.json` in the target directory. This file contains:
 
-- 파일 내용과 메타데이터
-- 용어 빈도 통계
-- BM25 계산을 위한 전역 통계
+- File content and metadata
+- Term frequency statistics
+- Global statistics for BM25 calculation
 
-인덱스 파일 index 명령으로 실행하거나 mcp명령으로 실행될 때도 생성됩니다.
-따라서 mcp명령으로 최초 실행시 시간이 소요될 수 있습니다.
+The index file is created when running the `index` command or when running the `mcp` command.
+Therefore, the first run of the `mcp` command may take some time.
 
-## 성능 최적화
+## Performance Optimization
 
-- 파일 변경 감지를 통한 증분 인덱싱
-- 숨김 파일 및 `node_modules` 디렉토리 제외
-- 지원하지 않는 파일 형식 자동 필터링
+- Incremental indexing through file change detection
+- Exclude hidden files and `node_modules` directories
+- Automatic filtering of unsupported file formats
 
+## Language Support
 
-## 문제 해결
+The application automatically detects the system language and displays messages accordingly.
 
-### 인덱스 파일이 없다는 오류
+### Supported Languages
+
+- **English (en)** - Default language
+- **Korean (ko)** - Korean language support
+- **Japanese (ja)** - Japanese language support  
+- **Chinese (zh)** - Chinese language support
+
+### Language Detection Priority
+
+1. **MCP_LANG** environment variable (highest priority)
+2. **LANGUAGE** environment variable
+3. **LC_ALL** environment variable
+4. **LC_MESSAGES** environment variable
+5. **LANG** environment variable
+6. **Node.js Intl API** (system locale)
+7. **English** (default fallback)
+
+### Setting Language
+
+You can set the language using environment variables:
+
+```bash
+# Use Korean
+MCP_LANG=ko local-file search "검색어"
+
+# Use English
+MCP_LANG=en local-file search "search term"
+
+# Use Japanese
+MCP_LANG=ja local-file search "検索語"
+
+# Set system-wide language
+export LANG=ko_KR.UTF-8
+local-file search "검색어"
+```
+
+### Language Detection Info
+
+Check current language detection:
+
+```bash
+local-file lang-info
+```
+
+This command shows:
+- Current detected locale
+- Environment variables
+- Test messages in the current language
+
+## Claude Desktop Integration
+
+To integrate with Claude Desktop, add the following to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "local-file": {
+      "command": "npx",
+      "args": ["-y", "@mtorange/mcp-local-file-search@latest", "mcp", "--dir=/path/to/your/files"]
+    }
+  }
+}
+```
+
+## Troubleshooting
+
+### Index file not found error
 ```bash
 local-file index --dir=/path/to/file
 ```
 
-### 검색 결과가 없는 경우
-- 파일이 올바르게 인덱싱되었는지 확인
-- 지원하는 파일 형식인지 확인
-- 검색어를 다르게 시도
+### No search results
+- Check if files are properly indexed
+- Verify supported file formats
+- Try different search terms
 
-### 파일 파싱 오류
-- 파일이 손상되지 않았는지 확인
-- 해당 파일 형식이 지원되는지 확인
-- `--force` 옵션으로 재인덱싱 시도
+### File parsing errors
+- Check if files are not corrupted
+- Verify file format is supported
+- Try reindexing with `--force` option
 
-## 라이선스
+## Development
 
-MIT License 
+### Building from Source
+```bash
+git clone https://github.com/mtorange/mcp-local-file-search.git
+cd mcp-local-file-search
+npm install
+npm start
+```
+
+### Testing
+```bash
+npm test
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+MIT License
+
+## Author
+
+MC.Song <mtorange@gmail.com>
+
+## Links
+
+- [GitHub Repository](https://github.com/mtorange/mcp-local-file-search)
+- [NPM Package](https://www.npmjs.com/package/@mtorange/mcp-local-file-search)
+- [Issues](https://github.com/mtorange/mcp-local-file-search/issues) 
