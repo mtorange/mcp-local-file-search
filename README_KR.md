@@ -14,7 +14,7 @@
 
 ```bash
 # 전역 설치 (권장)
-npm install -g mcp-local-file-search
+npm install -g @mtorange/mcp-local-file-search
 ```
 
 설치 후 `local-file` 명령어를 사용할 수 있습니다.
@@ -29,7 +29,7 @@ npm install -g mcp-local-file-search
 local-file mcp --dir=/path/to/file
 
 # 또는 npx로 바로 사용
-npx mcp-local-file-search mcp --dir=/path/to/file
+npx @mtorange/mcp-local-file-search mcp --dir=/path/to/file
 ```
 
 #### 2. 텍스트 검색
@@ -38,7 +38,7 @@ npx mcp-local-file-search mcp --dir=/path/to/file
 local-file search "검색할 텍스트" --dir=/path/to/file
 
 # 또는 npx로 바로 사용
-npx mcp-local-file-search search "검색할 텍스트" --dir=/path/to/file
+npx @mtorange/mcp-local-file-search search "검색할 텍스트" --dir=/path/to/file
 ```
 
 #### 3. 파일 인덱싱
@@ -47,7 +47,7 @@ npx mcp-local-file-search search "검색할 텍스트" --dir=/path/to/file
 local-file index --dir=/path/to/file
 
 # 또는 npx로 바로 사용
-npx mcp-local-file-search index --dir=/path/to/file
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file
 ```
 
 #### 4. 강제 재인덱싱
@@ -56,7 +56,7 @@ npx mcp-local-file-search index --dir=/path/to/file
 local-file index --dir=/path/to/file --force
 
 # 또는 npx로 바로 사용
-npx mcp-local-file-search index --dir=/path/to/file --force
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file --force
 ```
 
 ### 옵션
@@ -118,8 +118,8 @@ local-file mcp --dir=~/Documents --debug-log=debug.log
 ### 4. npx로 바로 사용
 ```bash
 # 전역 설치 없이 바로 사용
-npx mcp-local-file-search mcp --dir=/path/to/file
-npx mcp-local-file-search search "검색어" --dir=/path/to/file
+npx @mtorange/mcp-local-file-search mcp --dir=/path/to/file
+npx @mtorange/mcp-local-file-search search "검색어" --dir=/path/to/file
 ```
 
 ## 인덱스 파일
@@ -165,18 +165,30 @@ npx mcp-local-file-search search "검색어" --dir=/path/to/file
 환경 변수를 사용하여 언어를 설정할 수 있습니다:
 
 ```bash
-# 한국어 사용
+# 한국어 사용 (전역 설치)
 MCP_LANG=ko local-file search "검색어"
 
-# 영어 사용
+# 한국어 사용 (npx)
+MCP_LANG=ko npx @mtorange/mcp-local-file-search search "검색어"
+
+# 영어 사용 (전역 설치)
 MCP_LANG=en local-file search "search term"
 
-# 일본어 사용
+# 영어 사용 (npx)
+MCP_LANG=en npx @mtorange/mcp-local-file-search search "search term"
+
+# 일본어 사용 (전역 설치)
 MCP_LANG=ja local-file search "検索語"
+
+# 일본어 사용 (npx)
+MCP_LANG=ja npx @mtorange/mcp-local-file-search search "検索語"
 
 # 시스템 전체 언어 설정
 export LANG=ko_KR.UTF-8
 local-file search "검색어"
+# 또는 npx로
+export LANG=ko_KR.UTF-8
+npx @mtorange/mcp-local-file-search search "검색어"
 ```
 
 ### 언어 감지 정보 확인
@@ -184,7 +196,11 @@ local-file search "검색어"
 현재 언어 감지 정보를 확인하세요:
 
 ```bash
+# 전역 설치 시
 local-file lang-info
+
+# npx 사용 시
+npx @mtorange/mcp-local-file-search lang-info
 ```
 
 이 명령어는 다음을 보여줍니다:
@@ -197,7 +213,11 @@ local-file lang-info
 
 ### 인덱스 파일이 없다는 오류
 ```bash
+# 전역 설치 시
 local-file index --dir=/path/to/file
+
+# npx 사용 시
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file
 ```
 
 ### 검색 결과가 없는 경우
@@ -208,7 +228,14 @@ local-file index --dir=/path/to/file
 ### 파일 파싱 오류
 - 파일이 손상되지 않았는지 확인
 - 해당 파일 형식이 지원되는지 확인
-- `--force` 옵션으로 재인덱싱 시도
+- `--force` 옵션으로 재인덱싱 시도:
+```bash
+# 전역 설치 시
+local-file index --dir=/path/to/file --force
+
+# npx 사용 시
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file --force
+```
 
 ## 라이선스
 
