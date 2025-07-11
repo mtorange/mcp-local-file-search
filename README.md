@@ -167,18 +167,30 @@ The application automatically detects the system language and displays messages 
 You can set the language using environment variables:
 
 ```bash
-# Use Korean
+# Use Korean (global installation)
 MCP_LANG=ko local-file search "검색어"
 
-# Use English
+# Use Korean (with npx)
+MCP_LANG=ko npx @mtorange/mcp-local-file-search search "검색어"
+
+# Use English (global installation)
 MCP_LANG=en local-file search "search term"
 
-# Use Japanese
+# Use English (with npx)
+MCP_LANG=en npx @mtorange/mcp-local-file-search search "search term"
+
+# Use Japanese (global installation)
 MCP_LANG=ja local-file search "検索語"
+
+# Use Japanese (with npx)
+MCP_LANG=ja npx @mtorange/mcp-local-file-search search "検索語"
 
 # Set system-wide language
 export LANG=ko_KR.UTF-8
 local-file search "검색어"
+# Or with npx
+export LANG=ko_KR.UTF-8
+npx @mtorange/mcp-local-file-search search "검색어"
 ```
 
 ### Language Detection Info
@@ -186,7 +198,11 @@ local-file search "검색어"
 Check current language detection:
 
 ```bash
+# With global installation
 local-file lang-info
+
+# With npx
+npx @mtorange/mcp-local-file-search lang-info
 ```
 
 This command shows:
@@ -213,7 +229,11 @@ To integrate with Claude Desktop, add the following to your `claude_desktop_conf
 
 ### Index file not found error
 ```bash
+# With global installation
 local-file index --dir=/path/to/file
+
+# With npx
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file
 ```
 
 ### No search results
@@ -224,7 +244,14 @@ local-file index --dir=/path/to/file
 ### File parsing errors
 - Check if files are not corrupted
 - Verify file format is supported
-- Try reindexing with `--force` option
+- Try reindexing with `--force` option:
+```bash
+# With global installation
+local-file index --dir=/path/to/file --force
+
+# With npx
+npx @mtorange/mcp-local-file-search index --dir=/path/to/file --force
+```
 
 ## Development
 
