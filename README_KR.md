@@ -208,6 +208,20 @@ npx @mtorange/mcp-local-file-search lang-info
 - 환경 변수들
 - 현재 언어의 테스트 메시지
 
+## Claude Desktop 통합
+
+Claude Desktop과 통합하려면 `claude_desktop_config.json`에 다음을 추가하세요:
+
+```json
+{
+  "mcpServers": {
+    "local-file": {
+      "command": "npx",
+      "args": ["-y", "@mtorange/mcp-local-file-search@latest", "mcp", "--dir=/path/to/your/files"]
+    }
+  }
+}
+```
 
 ## 문제 해결
 
@@ -237,6 +251,38 @@ local-file index --dir=/path/to/file --force
 npx @mtorange/mcp-local-file-search index --dir=/path/to/file --force
 ```
 
+## 개발
+
+### 소스 빌드
+```bash
+git clone https://github.com/mtorange/mcp-local-file-search.git
+cd mcp-local-file-search
+npm install
+npm start
+```
+
+### 테스트
+```bash
+npm test
+```
+
+## 기여하기
+
+1. 저장소를 포크하세요
+2. 기능 브랜치를 생성하세요
+3. 변경사항을 적용하세요
+4. 풀 리퀘스트를 제출하세요
+
 ## 라이선스
 
-MIT License 
+MIT License
+
+## 작성자
+
+MC.Song <mtorange@gmail.com>
+
+## 링크
+
+- [GitHub 저장소](https://github.com/mtorange/mcp-local-file-search)
+- [NPM 패키지](https://www.npmjs.com/package/@mtorange/mcp-local-file-search)
+- [이슈 보고](https://github.com/mtorange/mcp-local-file-search/issues)
